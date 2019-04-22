@@ -1,0 +1,31 @@
+#include<stdio.h>
+int main(void)
+{
+    int position,c,n,i,d;
+    int sweep,flag;
+    int a1[10];
+    printf("Enter the number of element you want to insert: ");
+    scanf("%d",&n);
+    printf("Enter element one by one: ");
+    for(i=0;i<n;i++)scanf("%d",&a1[i]);
+    for(c=0;c<n;c++)
+    {
+        flag=0;
+        position=c;
+            for(d=c+1;d<n;d++)
+            {
+                if(a1[position]>a1[d])
+                {
+                    position=d;
+                    flag++;
+                }
+            }
+            printf("%d position swapped %d times\n\n",c,flag);
+            sweep=a1[position];
+            a1[position]=a1[c];
+            a1[c]=sweep;
+     }
+     printf("Selection sorted ascending order: \n");
+     for(i=0;i<n;i++)printf("%d\n",a1[i]);
+     return 0;
+}

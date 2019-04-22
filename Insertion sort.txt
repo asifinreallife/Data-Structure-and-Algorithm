@@ -1,0 +1,25 @@
+#include<stdio.h>
+int main(void)
+{
+    int i,j,s,temp;
+    int a1[10];
+    printf("Enter the total size of the array: ");
+    scanf("%d",&s);
+    printf("One by one enter the elements of the array: ");
+    for(i=0;i<s;i++)scanf("%d",&a1[i]);
+    for(i=1;i<s;i++)
+    {
+        temp=a1[i];
+        j=i-1;
+        while((temp<a1[j])&&j>=0)
+        {
+            a1[j+1]=a1[j];
+            j=j-1;
+            a1[j+1]=temp;
+        }
+
+    }
+    printf("After sorting: \n");
+    for(i=0;i<s;i++)printf("%d\n",a1[i]);
+    return 0;
+}

@@ -1,0 +1,127 @@
+#include<stdio.h>
+#include<conio.h>
+#include<string.h>
+#include<math.h>
+#include<stdlib.h>
+
+#define BLANK ' '
+#define TAB '\t'
+#define MAX 50
+
+void push(int symbol);
+int pop();
+void infix_to_postfix();
+int priority(char symbol);
+int isEmpty();
+int white_space(char);
+
+char infix[MAX], postfix[MAX];
+int stack[MAX];
+int top;
+
+int main()
+{
+    top=-1;
+    printf("Enter infix : ");//Entering infix string here
+    gets(infix);//infix will work because we have declared proper header file
+    infix_to_postfix();
+    printf("Postfix : %s\n",postfix);
+    getch();
+    return 1;
+}
+
+void infix_to_postfix()
+{
+    int i,p=0;//here i and p is local variable just declared in this method
+    char next;//this is also a local variable
+    char symbol;//this is local variable too
+    for(i=0;i<strlen(infix);i++)
+    {
+        symbol=infix[i];
+        if(!white_space(symbol))
+        {
+            switch(symbol)
+            {
+            case '(':
+                push(symbol);//see we r pushing ( to stack here we do all the pushing
+                break;
+            case ')':
+                while((next=pop())!='(')
+                    postfix[p++] = next;
+                break;
+            case '+':
+            case '-':
+            case '*':
+            case '/':
+            case '%':
+            case '^':
+                while( !isEmpty( ) &&  priority(stack[top])>= priority(symbol) )//in this while loop we r actually pushing all the operator according to their precedence remember in post fix the stack operator has to be always greater than or equal to expression operator to move
+                    postfix[p++]=pop();
+                push(symbol);
+                break;
+            default: /*if an operand comes*/
+                 postfix[p++]=symbol;//this default if an operand comes before an operator we simply put it to postfix array
+
+            }
+        }
+    }
+    while(!isEmpty( ))
+        postfix[p++]=pop();//after reaching end we automatically pop all the elements from the stack
+    postfix[p]='\0'; /*End postfix with'\0' to make it a string*/
+}
+
+/*This function returns the priority of the operator*/
+int priority(char symbol)
+{
+    switch(symbol)
+    {
+    case '(':
+        return 0;
+    case '+':
+    case '-':
+        return 1;
+    case '*':
+    case '/':
+    case '%':
+        return 2;
+    case '^':
+        return 3;
+    default :
+        return 0;
+    }
+}
+
+void push(int symbol)
+{
+    if(top>MAX)
+    {
+        printf("Stack overflow\n");
+        exit(1);
+    }
+    stack[++top]=symbol;
+}
+
+int pop()
+{
+    if( isEmpty() )
+    {
+        printf("Stack underflow\n");
+        exit(1);
+    }
+    return (stack[top--]);
+}
+int isEmpty()
+{
+    if(top==-1)
+        return 1;
+    else
+        return 0;
+}
+
+int white_space(char symbol)
+{
+    if( symbol == BLANK || symbol == TAB )
+        return 1;
+    else
+        return 0;
+}
